@@ -1,0 +1,44 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:NewsReader.ViewModels"
+             x:DataType="viewmodel:NewsDetailsViewModel"
+             x:Class="NewsReader.Views.NewsDetailsPage"
+             Title="Nyhetsdetaljer">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Image Source="{Binding Article.UrlToImage}"
+                   HeightRequest="250"
+                   Aspect="AspectFill"
+                   HorizontalOptions="Fill">
+            </Image>
+
+            <Label Text="{Binding Article.Title}"
+                   FontSize="24"
+                   FontAttributes="Bold" />
+
+            <HorizontalStackLayout Spacing="10">
+                <Label Text="{Binding Article.Source.Name}" 
+                       TextColor="{StaticResource Primary}" 
+                       FontAttributes="Bold" />
+                <Label Text="{Binding Article.PublishedAt, StringFormat='{0:yyyy-MM-dd}'}" 
+                       TextColor="Gray" />
+            </HorizontalStackLayout>
+
+            <BoxView HeightRequest="1" Color="LightGray" />
+
+            <Label Text="{Binding Article.Description}"
+                   FontSize="18"
+                   FontAttributes="Italic" />
+
+            <Label Text="{Binding Article.Content}"
+                   FontSize="16" />
+
+            <Button Text="Läs hela artikeln"
+                    Margin="0,20,0,0"
+                    Command="{Binding OpenBrowserCommand}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
