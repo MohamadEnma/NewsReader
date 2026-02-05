@@ -11,6 +11,8 @@ namespace NewsReader.Services
     {
         Task<IReadOnlyList<ArticleDto>> GetTopHeadlinesAsync(NewsQuery query, CancellationToken ct = default);
 
+      
+
     }
 
 }

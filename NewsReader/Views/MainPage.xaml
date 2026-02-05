@@ -20,6 +20,11 @@
            Text="{Binding SearchText}"
            SearchCommand="{Binding LoadCommand}" />
 
+        <Picker Grid.Row="1" 
+                Title="Välj Kategory" 
+                ItemsSource="{Binding Categories}" 
+                SelectedItem="{Binding SelectedCategory}" />
+
 
         <RefreshView Grid.Row="2" 
                      IsRefreshing="{Binding IsBusy}" 

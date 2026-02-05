@@ -11,5 +11,6 @@ namespace NewsReader.Models
         public string Country { get; set; } = "se";
         public string? SearchText { get; set; }
         public int PageSize { get; set; } = 20;
+        public string Category { get; set; } = "general";
     }
 }

@@ -15,7 +15,6 @@ namespace NewsReader.Services
             _httpClient = http;
             _opt = opt.Value;
 
-            // NewsAPI kräver User-Agent
             if (!_httpClient.DefaultRequestHeaders.Contains("User-Agent"))
             {
                 _httpClient.DefaultRequestHeaders.Add("User-Agent", "MauiNewsReader");
@@ -24,10 +23,11 @@ namespace NewsReader.Services
 
         public async Task<IReadOnlyList<ArticleDto>> GetTopHeadlinesAsync(NewsQuery query, CancellationToken ct = default)
         {
-            // dynamiskt URL. Om SearchText saknas kör vi en standard-sökning.
-            var searchTerm = string.IsNullOrWhiteSpace(query.SearchText) ? "latest" : query.SearchText;
-
             
+            var searchTerm = string.IsNullOrWhiteSpace(query.SearchText) ? "latest" : query.SearchText;
+            var categoryParam = string.IsNullOrWhiteSpace(query.Category) ? "&category=general" : $"&category={query.Category}";
+
+
             var url = $"{_opt.BaseUrl}/v2/everything?q={searchTerm}&pageSize={query.PageSize}&apiKey={_opt.ApiKey}";
 
             try

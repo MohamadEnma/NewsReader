@@ -15,8 +15,12 @@ namespace NewsReader.ViewModels
         [ObservableProperty] private bool isBusy;
         [ObservableProperty] private string? errorMessage;
 
-        [ObservableProperty] private string searchText = "AI";
-      
+        [ObservableProperty] private string searchText;
+        [ObservableProperty] private string? selectedCategory;
+
+        public IReadOnlyList<string> Categories { get; } =
+          new[] { "business", "entertainment", "general", "health", "science", "sports", "technology" };
+
         public NewsListViewModel(INewsApiClient client)
         {
             _client = client;
@@ -34,11 +38,11 @@ namespace NewsReader.ViewModels
                 {
                     Country = "se",
                     SearchText = string.IsNullOrWhiteSpace(SearchText) ? null : SearchText,
-                    PageSize = 20
+                    PageSize = 20,
+                    Category = string.IsNullOrWhiteSpace(selectedCategory) ? "general" : selectedCategory
                 };
 
                 var items = await _client.GetTopHeadlinesAsync(q);
-
                 Articles.Clear();
                 foreach (var a in items)
                     Articles.Add(a);
@@ -60,6 +64,8 @@ namespace NewsReader.ViewModels
         {
             await LoadAsync();
         }
+
+
 
         [RelayCommand]
         private async Task OpenDetails(ArticleDto? article)
