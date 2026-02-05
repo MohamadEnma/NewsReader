@@ -8,9 +8,11 @@ namespace NewsReader.Models
 {
     public sealed class NewsQuery
     {
-        public string Country { get; set; } = "se";
+        public string Country { get; set; } = "us";
         public string? SearchText { get; set; }
         public int PageSize { get; set; } = 20;
         public string Category { get; set; } = "general";
+
+        public int Page { get; set; } = 1;
     }
 }

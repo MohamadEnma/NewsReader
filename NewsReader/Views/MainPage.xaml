@@ -1,37 +1,32 @@
-﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:NewsReader.ViewModels"
              xmlns:models="clr-namespace:NewsReader.Models"
              x:DataType="viewmodel:NewsListViewModel"
              x:Class="NewsReader.Views.MainPage"
+             x:Name="RootPage"
              Title="Daily News">
 
     <Grid RowDefinitions="Auto, Auto, *">
 
-        <ActivityIndicator Grid.Row="2"
-                   IsRunning="{Binding IsBusy}"
-                   IsVisible="{Binding IsBusy}"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
-                   Color="{StaticResource Primary}" />
-
         <SearchBar Grid.Row="0" 
-           Placeholder="Sök efter ämne (t.ex. AI, Sport...)" 
-           Text="{Binding SearchText}"
-           SearchCommand="{Binding LoadCommand}" />
+                   Placeholder="Sök efter ämne (t.ex. AI, Sport...)" 
+                   Text="{Binding SearchText}"
+                   SearchCommand="{Binding LoadCommand}" />
 
         <Picker Grid.Row="1" 
-                Title="Välj Kategory" 
+                Title="Välj Kategori" 
                 ItemsSource="{Binding Categories}" 
-                SelectedItem="{Binding SelectedCategory}" />
+                SelectedItem="{Binding SelectedCategory , Mode=TwoWay}" />
 
-
+        <!-- RefreshView with CollectionView -->
         <RefreshView Grid.Row="2" 
                      IsRefreshing="{Binding IsBusy}" 
                      Command="{Binding LoadCommand}">
 
             <CollectionView ItemsSource="{Binding Articles}"
-                SelectionMode="None">
+                            SelectionMode="None">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:ArticleDto">
                         <Border Margin="12,6" 
@@ -48,10 +43,10 @@
                             </Border.Shadow>
 
                             <Border.GestureRecognizers>
+                                <!-- Bind to the page's BindingContext.OpenDetailsCommand via x:Reference to the page -->
                                 <TapGestureRecognizer 
-                                    
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:NewsListViewModel}}, Path=OpenDetailsCommand}"
-                                        CommandParameter="{Binding .}" />
+                                    Command="{Binding BindingContext.OpenDetailsCommand, Source={x:Reference RootPage}}"
+                                    CommandParameter="{Binding .}" />
                             </Border.GestureRecognizers>
 
                             <Grid ColumnDefinitions="120, *">

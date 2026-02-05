@@ -14,9 +14,8 @@ namespace NewsReader.ViewModels
 
         [ObservableProperty] private bool isBusy;
         [ObservableProperty] private string? errorMessage;
-
         [ObservableProperty] private string searchText;
-        [ObservableProperty] private string? selectedCategory;
+        [ObservableProperty] private string? selectedCategory = "general";
 
         public IReadOnlyList<string> Categories { get; } =
           new[] { "business", "entertainment", "general", "health", "science", "sports", "technology" };
@@ -29,6 +28,8 @@ namespace NewsReader.ViewModels
         [RelayCommand]
         private async Task LoadAsync()
         {
+            if (IsBusy) return; // guard against concurrent loads
+
             ErrorMessage = null;
             IsBusy = true;
 
@@ -39,7 +40,7 @@ namespace NewsReader.ViewModels
                     Country = "se",
                     SearchText = string.IsNullOrWhiteSpace(SearchText) ? null : SearchText,
                     PageSize = 20,
-                    Category = string.IsNullOrWhiteSpace(selectedCategory) ? "general" : selectedCategory
+                    Category = string.IsNullOrWhiteSpace(SelectedCategory) ? "general" : SelectedCategory
                 };
 
                 var items = await _client.GetTopHeadlinesAsync(q);
@@ -55,9 +56,7 @@ namespace NewsReader.ViewModels
             {
                 IsBusy = false;
             }
-            
         }
-
 
         [RelayCommand]
         public async Task InitializeAsync()
@@ -65,20 +64,24 @@ namespace NewsReader.ViewModels
             await LoadAsync();
         }
 
-
-
         [RelayCommand]
         private async Task OpenDetails(ArticleDto? article)
         {
             if (article is null) return;
 
-            
             var navigationParameter = new Dictionary<string, object>
-    {
-        { "Article", article }
-    };
+            {
+                { "Article", article }
+            };
 
             await Shell.Current.GoToAsync("NewsDetailsPage", navigationParameter);
+        }
+
+     
+        partial void OnSelectedCategoryChanged(string? value)
+        {
+            
+            _ = LoadAsync();
         }
     }
 }

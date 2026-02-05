@@ -10,9 +10,5 @@ namespace NewsReader.Services
     public interface INewsApiClient
     {
         Task<IReadOnlyList<ArticleDto>> GetTopHeadlinesAsync(NewsQuery query, CancellationToken ct = default);
-
-      
-
     }
-
 }

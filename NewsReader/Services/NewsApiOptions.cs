@@ -7,13 +7,11 @@ using System.Threading.Tasks;
 
 namespace NewsReader.Services
 {
-    public sealed class NewsApiOptions 
+    public class NewsApiOptions
     {
-        public string BaseUrl { get; set; } = "https://newsapi.org";
-        public string ApiKey { get; set; } = "";
-        public string Country { get; set; } = "se";
+        public string BaseUrl { get; set; } = string.Empty;
+        public string ApiKey { get; set; } = string.Empty;
+        public string Country { get; set; } = "us";
         public int PageSize { get; set; } = 20;
-
-       
     }
 }
